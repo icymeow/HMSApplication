@@ -1,5 +1,8 @@
 package Info;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Doctor extends User {
     private String doctorID;
     private List<String> availability;

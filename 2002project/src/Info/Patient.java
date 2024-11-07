@@ -1,6 +1,7 @@
 package Info;
 
 public class Patient extends User implements PersonalInfo {
+    public MedicalRecord medicalRecord;
     private String patientID;
     private String name;
     private String dateOfBirth;

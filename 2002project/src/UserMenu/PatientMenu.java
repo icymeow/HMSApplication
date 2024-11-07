@@ -1,6 +1,6 @@
 package UserMenu;
 
-public class PatientMenu {
+public class PatientMenu{
     public static void displayMenu() {
         System.out.println("\n--- Info.Patient Menu ---");
         System.out.println("1. View Medical Record");
