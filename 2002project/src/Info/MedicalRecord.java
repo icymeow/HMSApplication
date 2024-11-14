@@ -1,38 +1,33 @@
 package Info;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MedicalRecord {
     private String patientID;
-    private String[] pastDiagnoses;
-    private String[] treatments;
+    private List<String> pastDiagnoses;
+    private List<String> treatments;
     private String additionalNotes;
 
     // Constructor
-    public MedicalRecord(String patientID, String[] pastDiagnoses, String[] treatments, String additionalNotes) {
+    public MedicalRecord(String patientID) {
         this.patientID = patientID;
-        this.pastDiagnoses = pastDiagnoses;
-        this.treatments = treatments;
-        this.additionalNotes = additionalNotes;
+        this.pastDiagnoses = new ArrayList<>();
+        this.treatments = new ArrayList<>();
+        this.additionalNotes = "";
     }
 
-    // Getter and Setter methods
+    // Getters and Setters
     public String getPatientID() {
         return patientID;
     }
 
-    public String[] getPastDiagnoses() {
+    public List<String> getPastDiagnoses() {
         return pastDiagnoses;
     }
 
-    public void setPastDiagnoses(String[] pastDiagnoses) {
-        this.pastDiagnoses = pastDiagnoses;
-    }
-
-    public String[] getTreatments() {
+    public List<String> getTreatments() {
         return treatments;
-    }
-
-    public void setTreatments(String[] treatments) {
-        this.treatments = treatments;
     }
 
     public String getAdditionalNotes() {
@@ -43,22 +38,22 @@ public class MedicalRecord {
         this.additionalNotes = additionalNotes;
     }
 
-    // Method to add a new diagnosis
+    // Methods to add diagnoses and treatments
     public void addDiagnosis(String diagnosis) {
-        // Logic to add the diagnosis to the pastDiagnoses array
+        pastDiagnoses.add(diagnosis);
     }
 
-    // Method to add a new treatment
     public void addTreatment(String treatment) {
-        // Logic to add the treatment to the treatments array
+        treatments.add(treatment);
     }
 
-    // Display medical record information
-    public void displayRecord() {
-        System.out.println("Info.Patient ID: " + patientID);
-        System.out.println("Diagnoses: " + String.join(", ", pastDiagnoses));
-        System.out.println("Treatments: " + String.join(", ", treatments));
-        System.out.println("Additional Notes: " + additionalNotes);
+    @Override
+    public String toString() {
+        return "MedicalRecord{" +
+                "patientID='" + patientID + '\'' +
+                ", pastDiagnoses=" + pastDiagnoses +
+                ", treatments=" + treatments +
+                ", additionalNotes='" + additionalNotes + '\'' +
+                '}';
     }
 }
-

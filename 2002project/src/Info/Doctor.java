@@ -18,12 +18,12 @@ public class Doctor extends User {
     }
 
     public void viewPatientRecord(Patient patient) {
-        System.out.println(patient.medicalRecord);
+        System.out.println(patient.getMedicalRecord());
     }
 
     public void updateMedicalRecords(Patient patient, String diagnosis, String treatment) {
-        patient.medicalRecord.addDiagnosis(diagnosis);
-        patient.medicalRecord.addTreatment(treatment);
+        patient.getMedicalRecord().addDiagnosis(diagnosis);
+        patient.getMedicalRecord().addTreatment(treatment);
     }
 
     public void setAvailability(String timeSlot) {

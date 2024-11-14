@@ -1,9 +1,9 @@
 package Info;
 
 public class User {
-    private String userID;
-    private String password;
-    private String role;
+    protected String userID;
+    protected String password;
+    protected String role;
     //private boolean isPasswordChanged;
 
     //constructor
