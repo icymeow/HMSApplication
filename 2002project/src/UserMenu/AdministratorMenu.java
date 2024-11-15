@@ -16,6 +16,7 @@ public class AdministratorMenu {
     private static final String STAFF_FILE = "Staff_List.csv";
     private static final String APPOINTMENTS_FILE = "Appointments.csv";
     private static final String MEDICINE_FILE = "Medicine_List.csv";
+    private final Administrator admin;
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void displayMenu() {
@@ -51,8 +52,7 @@ public class AdministratorMenu {
     }
 
     private static void manageHospitalStaff() {
-        List<String[]> staffRecords = CSVUtils.readCSV(STAFF_FILE);
-        System.out.println("Managing hospital staff...");
+        System.out.println("\nManaging hospital staff...");
         System.out.println("1. View Staff");
         System.out.println("2. Add Staff");
         System.out.println("3. Update Staff");
@@ -63,34 +63,66 @@ public class AdministratorMenu {
 
         switch (choice) {
             case 1:
-                viewRecords(staffRecords, "Hospital Staff");
+                viewStaff();
                 break;
-            case 2:  {
-                System.out.print("Enter new staff details (ID,Name,Role): ");
-                staffRecords.add(scanner.nextLine().split(","));
-                CSVUtils.writeCSV(STAFF_FILE, staffRecords);
+            case 2:  
+                addStaff();
                 break;
-            }
-                
             case 3:
-                updateRecord(staffRecords, "staff", STAFF_FILE);
+                updateStaff();
                 break;
             case 4:
-                deleteRecord(staffRecords, "staff", STAFF_FILE);
+                deleteStaff();
                 break;
             default:
                 System.out.println("Invalid choice.");
         }
     }
 
-        private void viewAppointmentDetails() {
-        List<String[]> appointmentRecords = CSVUtils.readCSV(APPOINTMENTS_FILE);
-        viewRecords(appointmentRecords, "Appointments");
+    private void viewStaff() {
+        List<String[]> staff = admin.viewStaff(STAFF_FILE);
+        System.out.println("\n=== Hospital Staff ===");
+        for (String[] record : staff) {
+            System.out.println(String.join(", ", record));
+        }
     }
 
+    private void addStaff() {
+        System.out.print("Enter new staff details (ID,Name,Role): ");
+        String[] newStaff = scanner.nextLine().split(",");
+        admin.addStaff(STAFF_FILE, newStaff);
+        System.out.println("Staff added successfully.");
+    }
+
+    private void updateStaff() {
+        System.out.print("Enter staff ID to update: ");
+        String staffID = scanner.nextLine();
+        System.out.print("Enter updated details (ID,Name,Role): ");
+        String[] updatedStaff = scanner.nextLine().split(",");
+        if (admin.updateStaff(STAFF_FILE, staffID, updatedStaff)) {
+            System.out.println("Staff updated successfully.");
+        } else {
+            System.out.println("Staff not found.");
+        }
+    }
+
+    private void removeStaff() {
+        System.out.print("Enter staff ID to remove: ");
+        String staffID = scanner.nextLine();
+        if (admin.removeStaff(STAFF_FILE, staffID)) {
+            System.out.println("Staff removed successfully.");
+        } else {
+            System.out.println("Staff not found.");
+        }
+    }
+
+        /*private void viewAppointmentDetails() {
+        List<String[]> appointmentRecords = CSVUtils.readCSV(APPOINTMENTS_FILE);
+        viewRecords(appointmentRecords, "Appointments");
+    }*/
+
     private static void manageMedicalInventory() {
-        List<String[]> medicineRecords = CSVUtils.readCSV(MEDICINE_FILE);
-        System.out.println("Managing medical inventory...");
+        System.out.println("\nManaging medical inventory...");
         System.out.println("1. View Inventory");
         System.out.println("2. Add Medication");
         System.out.println("3. Update Medication");
@@ -101,58 +133,56 @@ public class AdministratorMenu {
 
         switch (choice) {
             case 1:
-                viewRecords(medicineRecords, "Medication Inventory");
+                viewInventory();
                 break;
-            case 2:  {
-                System.out.print("Enter new medication details (Name,Stock,LowStockAlert): ");
-                medicineRecords.add(scanner.nextLine().split(","));
-                CSVUtils.writeCSV(MEDICINE_FILE, medicineRecords);
+            case 2:
+                addInventory();
                 break;
-            }
-            
             case 3:
-                updateRecord(medicineRecords, "medicine", MEDICINE_FILE);
+                updateInventory();
                 break;
             case 4:
-                deleteRecord(medicineRecords, "medicine", MEDICINE_FILE);
+                deleteInventory();
                 break;
             default:
                 System.out.println("Invalid choice.");
         }
     }
 
-    private void viewRecords(List<String[]> records, String title) {
-        System.out.println("\n=== " + title + " ===");
-        for (String[] record : records) {
+    private void viewInventory() {
+        List<String[]> inventory = admin.viewInventory(INVENTORY_FILE);
+        System.out.println("\n=== Medication Inventory ===");
+        for (String[] record : inventory) {
             System.out.println(String.join(", ", record));
         }
     }
 
-    private void updateRecord(List<String[]> records, String entityName, String fileName) {
-        System.out.print("Enter " + entityName + " ID to update: ");
-        String id = scanner.nextLine();
-        for (String[] record : records) {
-            if (record[0].equals(id)) {
-                System.out.print("Enter updated details (comma-separated): ");
-                String[] updatedDetails = scanner.nextLine().split(",");
-                System.arraycopy(updatedDetails, 0, record, 0, record.length);
-                CSVUtils.writeCSV(fileName, records);
-                System.out.println(entityName + " updated successfully.");
-                return;
-            }
-        }
-        System.out.println(entityName + " not found.");
+    private void addInventory() {
+        System.out.print("Enter new medication details (Name,Stock,LowStockAlert): ");
+        String[] newInventory = scanner.nextLine().split(",");
+        admin.addInventory(INVENTORY_FILE, newInventory);
+        System.out.println("Medication added successfully.");
     }
 
-    private void deleteRecord(List<String[]> records, String entityName, String fileName) {
-        System.out.print("Enter " + entityName + " ID to delete: ");
-        String id = scanner.nextLine();
-        boolean removed = records.removeIf(record -> record[0].equals(id));
-        if (removed) {
-            CSVUtils.writeCSV(fileName, records);
-            System.out.println(entityName + " deleted successfully.");
+    private void updateInventory() {
+        System.out.print("Enter medication name to update: ");
+        String itemName = scanner.nextLine();
+        System.out.print("Enter updated details (Name,Stock,LowStockAlert): ");
+        String[] updatedInventory = scanner.nextLine().split(",");
+        if (admin.updateInventory(INVENTORY_FILE, itemName, updatedInventory)) {
+            System.out.println("Medication updated successfully.");
         } else {
-            System.out.println(entityName + " not found.");
+            System.out.println("Medication not found.");
+        }
+    }
+
+    private void removeInventory() {
+        System.out.print("Enter medication name to remove: ");
+        String itemName = scanner.nextLine();
+        if (admin.removeInventory(INVENTORY_FILE, itemName)) {
+            System.out.println("Medication removed successfully.");
+        } else {
+            System.out.println("Medication not found.");
         }
     }
 }
