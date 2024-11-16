@@ -4,14 +4,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/*Medical Record Management: 
+○ Doctors can view the medical records of patients under their care.  
+○ Doctors can update the medical records of patients by adding new diagnoses, 
+prescriptions, and treatment plans. 
+Appointment Management: 
+○ Doctors can view their personal schedule and set their availability for 
+appointments. 
+○ Doctors can accept or decline appointment requests. 
+○ Doctors can view the list of their upcoming appointments. 
+○ Appointment Outcome Record: After each completed appointment, the doctor 
+will record the: 
+● Date of Appointment 
+● Type of service provided (e.g., consultation, X-ray, blood test etc). 
+● Any prescribed medications: - 
+medication name - 
+status (default is pending) 
+● Consultation notes 
+*/
 
 public class Doctor extends User {
     private List<Appointment> appointments; // List of appointments for the doctor
     private Map<String, Boolean> availableSlots; // Map of available slots (date-time as key, availability as value)
 
     // Constructor
-    public Doctor(String userID, String password, String role) {
-        super(userID, password, role);
+    public Doctor(String doctorID, String password, String role) {
+        super(doctorID, password, role);
         this.appointments = new ArrayList<>();
         this.availableSlots = new HashMap<>();
     }
@@ -102,23 +120,41 @@ public class Doctor extends User {
         }
     }
 
-    // Record appointment outcome
+   // Method to record appointment outcome
     public void recordAppointmentOutcome(String appointmentId, String serviceType, List<String> medications, String notes) {
         for (Appointment appointment : appointments) {
             if (appointment.getAppointmentId().equals(appointmentId)) {
                 appointment.setStatus("Completed");
+                appointment.setServiceType(serviceType);
+                appointment.setMedications(medications);
+                appointment.setNotes(notes);
+                appointment.setDateOfCompletion(java.time.LocalDate.now()); // Record the date of appointment
                 System.out.println("Appointment " + appointmentId + " marked as completed.");
-                System.out.println("Service Type: " + serviceType);
-                System.out.println("Medications: " + medications);
-                System.out.println("Notes: " + notes);
                 return;
             }
         }
         System.out.println("Appointment not found.");
     }
 
+
     // Add new appointment
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
+    
+    // Method to update patient medical records
+    public void updatePatientMedicalRecords(String patientId, String newDiagnosis, List<String> newPrescriptions, String treatmentPlan) {
+        for (Patient patient : patientsUnderCare) {
+            if (patient.getPatientId().equals(patientId)) {
+                patient.addDiagnosis(newDiagnosis);
+                patient.addPrescriptions(newPrescriptions);
+                patient.updateTreatmentPlan(treatmentPlan);
+                System.out.println("Medical record updated for patient " + patientId);
+                return;
+            }
+        }
+        System.out.println("Patient not under your care.");
+    }
+
+    
 }
