@@ -30,7 +30,7 @@ public class DoctorMenu {
                 setAvailability();
                 break;
             case 5:
-                acceptOrDeclineAppointments();
+                handleAppointmentRequest();
                 break;
             case 6:
                 viewUpcomingAppointments();
