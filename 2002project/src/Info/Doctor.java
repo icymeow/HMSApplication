@@ -5,6 +5,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*Medical Record Management: 
+○ Doctors can view the medical records of patients under their care.  
+○ Doctors can update the medical records of patients by adding new diagnoses, 
+prescriptions, and treatment plans. 
+Appointment Management: 
+○ Doctors can view their personal schedule and set their availability for 
+appointments. 
+○ Doctors can accept or decline appointment requests. 
+○ Doctors can view the list of their upcoming appointments. 
+○ Appointment Outcome Record: After each completed appointment, the doctor 
+will record the: 
+● Date of Appointment 
+● Type of service provided (e.g., consultation, X-ray, blood test etc). 
+● Any prescribed medications: - 
+medication name - 
+status (default is pending) 
+● Consultation notes*/
+
 public class Doctor extends User {
     private List<Appointment> appointments; // List of appointments for the doctor
     private Map<String, Boolean> availableSlots; // Map of available slots (date-time as key, availability as value)
