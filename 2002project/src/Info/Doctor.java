@@ -121,4 +121,32 @@ public class Doctor extends User {
     public void addAppointment(Appointment appointment) {
         appointments.add(appointment);
     }
+    // Method to view medical records of patients under care
+    public void viewPatientMedicalRecords(String patientId) {
+        for (Patient patient : patientsUnderCare) {
+            if (patient.getPatientId().equals(patientId)) {
+                System.out.println(patient.getMedicalRecord());
+                return;
+            }
+        }
+        System.out.println("Patient not under your care.");
+    }
+
+    // Method to update patient medical records
+    public void updatePatientMedicalRecords(String patientId, String newDiagnosis, List<String> newPrescriptions, String treatmentPlan) {
+        for (Patient patient : patientsUnderCare) {
+            if (patient.getPatientId().equals(patientId)) {
+                patient.addDiagnosis(newDiagnosis);
+                patient.addPrescriptions(newPrescriptions);
+                patient.updateTreatmentPlan(treatmentPlan);
+                System.out.println("Medical record updated for patient " + patientId);
+                return;
+            }
+        }
+        System.out.println("Patient not under your care.");
+    }
+
+    
+}
+
 }
