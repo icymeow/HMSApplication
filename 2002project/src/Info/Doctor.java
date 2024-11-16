@@ -8,12 +8,19 @@ import java.util.Map;
 public class Doctor extends User {
     private List<Appointment> appointments; // List of appointments for the doctor
     private Map<String, Boolean> availableSlots; // Map of available slots (date-time as key, availability as value)
+    private String doctorId;
+    private String name;
+    private List<Appointment> appointments;
+    private List<Patient> patientsUnderCare;
 
     // Constructor
     public Doctor(String userID, String password, String role) {
         super(userID, password, role);
         this.appointments = new ArrayList<>();
         this.availableSlots = new HashMap<>();
+        this.doctorId = doctorId;
+        this.name = name;
+        this.patientsUnderCare = patientsUnderCare;
     }
 
     // View personal schedule
